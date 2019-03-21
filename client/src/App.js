@@ -1,17 +1,20 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 class App extends Component {
-  render() {
-    return (
-      <div>
-        <div>
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-        </div>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <section className="section">
+                <div className="container">
+                    <h1 className="title">
+                        Hello World
+                    </h1>
+                    <p className="subtitle">
+                        My first website with <strong>Bulma</strong>!
+                    </p>
+                </div>
+            </section>
+        );
+    }
 }
 
 export default App;
