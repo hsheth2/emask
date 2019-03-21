@@ -2,12 +2,13 @@
 
 require('dotenv').config();
 
-const mailgun = require('mailgun-js')({
-    apiKey: process.env.MAILGUN_API_KEY,
-    domain: process.env.MAILGUN_DOMAIN,
-});
+const express = require('express');
+const app = express();
+const port = 3001;
 
-mailgun.get('/routes', {limit: 100}).then((data) => {
-    console.log(data);
-});
+app.get('/', (req, res) => res.send('Hello World!'));
 
+const api = require('./api');
+app.use('/api', api);
+
+app.listen(port, () => console.log(`Server listening on port ${port}!`));

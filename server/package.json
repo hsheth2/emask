@@ -3,8 +3,17 @@
   "version": "1.0.0",
   "main": "server.js",
   "license": "MIT",
+  "scripts": {
+    "start": "nodemon server.js",
+    "mongodb-docker": "docker run --name emask-mongo -p 27017:27017 --rm -d mongo"
+  },
   "dependencies": {
     "dotenv": "^7.0.0",
-    "mailgun-js": "^0.22.0"
+    "express": "^4.16.4",
+    "mailgun-js": "^0.22.0",
+    "mongoose": "^5.4.19"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
   }
 }
