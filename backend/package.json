@@ -1,0 +1,10 @@
+{
+  "name": "emask-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^7.0.0",
+    "mailgun-js": "^0.22.0"
+  }
+}
