@@ -18,4 +18,12 @@ router.get('/masks', (req, res, next) => {
     })
 });
 
+router.post('/masks', (req, res, next) => {
+    const mask = new Mask(req.data);
+    mask.save((err, mask) => {
+        if (err) return next(err);
+        res.sendStatus(202);
+    })
+});
+
 module.exports = router;
