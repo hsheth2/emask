@@ -1,7 +1,27 @@
-import React, {Component} from 'react';
+import React from 'react';
 import AddMaskedEmailModal from "./AddMaskedEmailModal";
 
-class App extends Component {
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            addModalOpen: false,
+        }
+    }
+
+    addModalOpen = () => {
+        this.setState({
+            addModalOpen: true,
+        })
+    };
+
+    addModalClose = () => {
+        this.setState({
+            addModalOpen: false,
+        })
+    };
+
     render() {
         return (
             <section className="section">
@@ -13,10 +33,10 @@ class App extends Component {
                         My first website with <strong>Bulma</strong>!
                     </p>
 
-                    <button className="button is-primary">Add Masked Email</button>
+                    <button className="button is-primary" onClick={this.addModalOpen}>Add Masked Email</button>
                 </div>
 
-                <AddMaskedEmailModal/>
+                <AddMaskedEmailModal open={this.state.addModalOpen} onClose={this.addModalClose}/>
             </section>
         );
     }
