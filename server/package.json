@@ -8,6 +8,7 @@
     "mongodb-docker": "docker run --name emask-mongo -p 27017:27017 --rm -d mongo"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
     "mailgun-js": "^0.22.0",

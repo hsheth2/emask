@@ -6,6 +6,10 @@ const express = require('express');
 const app = express();
 const port = 3001;
 
+// https://stackoverflow.com/a/12008719
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());  // to support JSON-encoded bodies
+
 app.get('/', (req, res) => res.send('Hello World!'));
 
 const api = require('./api');
