@@ -15,7 +15,7 @@ const maskSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-});
+}, {timestamps: true});
 
 const Mask = mongoose.model('Mask', maskSchema);
 

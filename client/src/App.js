@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import AddMaskedEmailModal from "./AddMaskedEmailModal";
 
 class App extends Component {
     render() {
@@ -11,7 +12,11 @@ class App extends Component {
                     <p className="subtitle">
                         My first website with <strong>Bulma</strong>!
                     </p>
+
+                    <button className="button is-primary">Add Masked Email</button>
                 </div>
+
+                <AddMaskedEmailModal/>
             </section>
         );
     }
