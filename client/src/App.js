@@ -1,5 +1,6 @@
 import React from 'react';
 import AddMaskedEmailModal from "./AddMaskedEmailModal";
+import MaskedEmailList from "./MaskedEmailList";
 
 class App extends React.Component {
     constructor(props) {
@@ -24,20 +25,24 @@ class App extends React.Component {
 
     render() {
         return (
-            <section className="section">
-                <div className="container">
-                    <h1 className="title">
-                        Hello World
-                    </h1>
-                    <p className="subtitle">
-                        My first website with <strong>Bulma</strong>!
-                    </p>
+            <div>
+                <section className="section">
+                    <div className="container">
+                        <h1 className="title">
+                            Hello World
+                        </h1>
+                        <p className="subtitle">
+                            My first website with <strong>Bulma</strong>!
+                        </p>
 
-                    <button className="button is-primary" onClick={this.addModalOpen}>Add Masked Email</button>
-                </div>
+                        <button className="button is-primary" onClick={this.addModalOpen}>Add Masked Email</button>
+                    </div>
+                </section>
 
                 <AddMaskedEmailModal open={this.state.addModalOpen} onClose={this.addModalClose}/>
-            </section>
+
+                <MaskedEmailList/>
+            </div>
         );
     }
 }
