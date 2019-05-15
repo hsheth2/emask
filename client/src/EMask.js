@@ -3,6 +3,7 @@ import AddMaskedEmailModal from "./AddMaskedEmailModal";
 import MaskedEmailList from "./MaskedEmailList";
 import axios from "axios";
 import {Button, Container, Header} from "semantic-ui-react";
+import {toast} from "react-toastify";
 
 class EMask extends React.Component {
     constructor(props) {
@@ -34,14 +35,15 @@ class EMask extends React.Component {
                     loaded: true,
                     loadedSuccess: true,
                     data: data,
-                })
+                });
             })
             .catch((err) => {
                 console.log(err);
                 this.setState({
                     loaded: true,
                     loadedSuccess: false,
-                })
+                });
+                toast.error("Failed to load masked emails.");
             })
     };
 
