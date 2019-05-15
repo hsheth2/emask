@@ -2,6 +2,7 @@ import React from 'react';
 import AddMaskedEmailModal from "./AddMaskedEmailModal";
 import MaskedEmailList from "./MaskedEmailList";
 import axios from "axios";
+import {Button, Container, Header} from "semantic-ui-react";
 
 class EMask extends React.Component {
     constructor(props) {
@@ -19,7 +20,7 @@ class EMask extends React.Component {
         this.refreshData();
     }
 
-    refreshData() {
+    refreshData = () => {
         this.setState({
             loaded: false,
             loadedSuccess: false,
@@ -42,7 +43,7 @@ class EMask extends React.Component {
                     loadedSuccess: false,
                 })
             })
-    }
+    };
 
     openAddModal = () => {
         this.setState({
@@ -60,7 +61,6 @@ class EMask extends React.Component {
         const loading = !this.state.loaded;
         const loadingFailed = !this.state.loadedSuccess;
         const data = this.state.data;
-        console.log(data);
 
         let content;
         if (loading) {
@@ -68,31 +68,28 @@ class EMask extends React.Component {
         } else if (loadingFailed) {
             content = <p>Failed to load masked emails.</p>
         } else {
-            content = <MaskedEmailList emails={data} />
+            content = <MaskedEmailList emails={data}/>
         }
 
         return (
             <div>
-                <section className="section">
-                    <div className="container">
-                        <h1 className="title">
-                            EMask
-                        </h1>
-                        <p className="subtitle">
-                            Set up email forwarders to mask your real email address.
-                        </p>
-                    </div>
-                </section>
+                <Container>
+                    <Header as={"h1"}
+                            content={"EMask"}
+                            subheader={"Set up email forwarders to mask your real email address."}
+                    />
+                </Container>
 
-                <section className={"section"}>
-                    <div className={"container"}>
-                        <AddMaskedEmailModal isOpen={this.state.isAddModalOpen} onClose={this.closeAddModal} refresh={this.refreshData}/>
+                <Container>
+                    {this.state.isAddModalOpen &&
+                    <AddMaskedEmailModal onClose={this.closeAddModal}
+                                         refresh={this.refreshData}/>
+                    }
 
-                        <button className="button is-primary" onClick={this.openAddModal}>Add Masked Email</button>
+                    <Button onClick={this.openAddModal}>Add Masked Email</Button>
 
-                        {content}
-                    </div>
-                </section>
+                    {content}
+                </Container>
             </div>
         );
     }
