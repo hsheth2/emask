@@ -27,16 +27,18 @@ class App extends React.Component {
         axios.post('/api/masks', this.state)
             .then((response) => {
                 console.log(response);
+                this.props.refresh();
                 this.props.onClose();
             })
             .catch((err) => {
                 console.error(err);
+                // TODO start using https://github.com/fkhadra/react-toastify
                 throw err;
             })
     };
 
     render() {
-        const open = this.props.open;
+        const open = this.props.isOpen;
 
         return (
             <div className={"modal " + (open ? "is-active" : "")}>
