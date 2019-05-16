@@ -2,7 +2,7 @@ import React from 'react';
 import AddMaskedEmailModal from "./AddMaskedEmailModal";
 import MaskedEmailList from "./MaskedEmailList";
 import axios from "axios";
-import {Button, Container, Header, Segment} from "semantic-ui-react";
+import {Button, Container, Header, Placeholder, Segment} from "semantic-ui-react";
 import {toast} from "react-toastify";
 
 class EMask extends React.Component {
@@ -67,7 +67,13 @@ class EMask extends React.Component {
         let content;
         if (loading) {
             content = (
-                <Segment loading>Loading</Segment>
+                <Segment loading>
+                    <Placeholder fluid>
+                        <Placeholder.Line/>
+                        <Placeholder.Line/>
+                        <Placeholder.Line/>
+                    </Placeholder>
+                </Segment>
             )
         } else if (loadingFailed) {
             content = (

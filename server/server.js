@@ -10,8 +10,6 @@ const port = 3001;
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());  // to support JSON-encoded bodies
 
-app.get('/', (req, res) => res.send('Hello World!'));
-
 const api = require('./api');
 app.use('/api', api);
 
