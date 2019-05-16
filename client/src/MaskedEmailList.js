@@ -1,5 +1,6 @@
 import React from 'react';
 import {Table} from "semantic-ui-react";
+import Moment from "react-moment";
 
 class App extends React.Component {
     render() {
@@ -17,14 +18,16 @@ class App extends React.Component {
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                    {!data ? (
-                        <Table.Row><Table.Cell>No masked emails yet.</Table.Cell></Table.Row>
+                    {!data.length ? (
+                        <Table.Row>
+                            <Table.Cell rowSpan={5}>No masked emails yet.</Table.Cell>
+                        </Table.Row>
                     ) : (
                         data.map((mask) =>
                             <Table.Row key={mask._id}>
                                 <Table.Cell>{mask.description}</Table.Cell>
                                 <Table.Cell>{mask.address}</Table.Cell>
-                                <Table.Cell>{new Date(mask.createdAt).toString()}</Table.Cell>
+                                <Table.Cell><Moment fromNow date={mask.createdAt} /></Table.Cell>
                                 <Table.Cell>{mask.blocked ? "Blocked" : "Forwarding"}</Table.Cell>
                                 <Table.Cell>0</Table.Cell>
                             </Table.Row>
