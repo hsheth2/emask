@@ -2,7 +2,7 @@ import React from 'react';
 import AddMaskedEmailModal from "./AddMaskedEmailModal";
 import MaskedEmailList from "./MaskedEmailList";
 import axios from "axios";
-import {Button, Container, Header} from "semantic-ui-react";
+import {Button, Container, Header, Segment} from "semantic-ui-react";
 import {toast} from "react-toastify";
 
 class EMask extends React.Component {
@@ -66,9 +66,16 @@ class EMask extends React.Component {
 
         let content;
         if (loading) {
-            content = <p>Loading...</p>
+            content = (
+                <Segment loading>Loading</Segment>
+            )
         } else if (loadingFailed) {
-            content = <p>Failed to load masked emails.</p>
+            content = (
+                <Segment>
+                    Failed to load masked emails.
+                    {/*<Button onClick={this.refreshData}>Retry</Button>*/}
+                </Segment>
+            )
         } else {
             content = <MaskedEmailList emails={data}/>
         }
