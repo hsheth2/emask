@@ -78,7 +78,7 @@ class EMask extends React.Component {
                 <Container>
                     <Header as={"h1"}
                             content={"EMask"}
-                            subheader={"Set up email forwarders to mask your real email address."}
+                            subheader={"Set up email forwarders to avoid giving out your real email address."}
                     />
                 </Container>
 
