@@ -27,7 +27,7 @@ function mailgunRouteFromMask(user, mask) {
     let address = escapeRegExp(mask.address);
     let domain = escapeRegExp(process.env.MAILGUN_DOMAIN);
     return {
-        priority: process.env.MAILGUN_ROUTE_PRIORITY,
+        priority: parseInt(process.env.MAILGUN_ROUTE_PRIORITY),
         description: `EMask; mask_id=${mask._id}; ${mask.description}`,
         expression: `match_recipient("${address}@${domain}")`,
         action: [
@@ -39,24 +39,43 @@ function mailgunRouteFromMask(user, mask) {
 }
 
 async function mailgunUpdateServer(user, masks, routes) {
-    // first pass: add/update routes for all masks
+    // First pass: add/update routes for all masks
     for (let mask of masks) {
         let maskId = mask._id;
 
         let goalRoute = mailgunRouteFromMask(user, mask);
-        let prevRoute = routes.find(route => route.maskId === maskId);
+        // noinspection EqualityComparisonWithCoercionJS
+        let prevRoute = routes.find(route => route.maskId == maskId);
         if (prevRoute) {
-            // TODO only put server if necessary
-            await mailgun.put(`/routes/${prevRoute.id}`, goalRoute);
+            // Only send request to server if necessary
+            let updatedRoute = {};
+            for (let key in goalRoute) {
+                // The mailgun API requires this parameter be sent as "action", but in its replies
+                // it uses the "actions" key.
+                let prevKey = key;
+                if (prevKey === "action")
+                    prevKey = "actions";
+
+                if (JSON.stringify(prevRoute[prevKey]) !== JSON.stringify(goalRoute[key])) {
+                    updatedRoute[key] = goalRoute[key];
+                }
+            }
+
+            if (Object.keys(updatedRoute).length !== 0) {
+                console.log(`updating mailgun route id=${prevRoute.id}`, updatedRoute);
+                await mailgun.put(`/routes/${prevRoute.id}`, updatedRoute);
+            }
             prevRoute.processed = true;
         } else {
+            console.log("creating mailgun route", goalRoute);
             await mailgun.post('/routes', goalRoute);
         }
     }
 
-    // second pass: remove extra routes
+    // Second pass: remove extra routes
     for (let route of routes) {
         if (!route.processed) {
+            console.log("deleting mailgun route", route);
             await mailgun.delete(`/routes/${route.id}`);
         }
     }
