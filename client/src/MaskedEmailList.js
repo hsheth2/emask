@@ -5,6 +5,7 @@ import Moment from "react-moment";
 class App extends React.Component {
     render() {
         let data = this.props.emails;
+        let domain = this.props.domain;
 
         return (
             <Table striped>
@@ -26,7 +27,7 @@ class App extends React.Component {
                         data.map((mask) =>
                             <Table.Row key={mask._id}>
                                 <Table.Cell>{mask.description}</Table.Cell>
-                                <Table.Cell>{mask.address}</Table.Cell>
+                                <Table.Cell>{mask.address}@{domain}</Table.Cell>
                                 <Table.Cell><Moment fromNow date={mask.createdAt} /></Table.Cell>
                                 <Table.Cell>{mask.blocked ? "Blocked" : "Forwarding"}</Table.Cell>
                                 <Table.Cell>0</Table.Cell>

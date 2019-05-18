@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from "axios";
-import {Button, Form, Icon, Modal} from "semantic-ui-react";
+import {Button, Form, Icon, Input, Modal} from "semantic-ui-react";
 import {toast} from "react-toastify";
 
 class App extends React.Component {
@@ -52,6 +52,7 @@ class App extends React.Component {
 
     render() {
         const loading = this.state.loading;
+        const domain = this.props.domain;
 
         return (
             <Modal open={true} onClose={this.props.onClose}>
@@ -67,7 +68,8 @@ class App extends React.Component {
 
                         <Form.Field>
                             <label>Custom Email</label>
-                            <input type="text" value={this.state.address} onChange={this.handleAddressChange}/>
+                            <Input type="text" value={this.state.address} onChange={this.handleAddressChange}
+                                label={`@${domain}`} labelPosition={"right"}/>
                             <small>You can specify a custom email address. If empty, a random mask will be generated.</small>
                         </Form.Field>
                     </Form>

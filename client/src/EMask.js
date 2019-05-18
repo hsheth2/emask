@@ -14,6 +14,7 @@ class EMask extends React.Component {
             loaded: false,
             loadedSuccess: false,
             data: [],
+            domain: "",
         };
     }
 
@@ -34,7 +35,8 @@ class EMask extends React.Component {
                 this.setState({
                     loaded: true,
                     loadedSuccess: true,
-                    data: data,
+                    data: data.masks,
+                    domain: data.domain,
                 });
             })
             .catch((err) => {
@@ -63,6 +65,7 @@ class EMask extends React.Component {
         const loading = !this.state.loaded;
         const loadingFailed = !this.state.loadedSuccess;
         const data = this.state.data;
+        const domain = this.state.domain;
 
         let content;
         if (loading) {
@@ -83,7 +86,7 @@ class EMask extends React.Component {
                 </Segment>
             )
         } else {
-            content = <MaskedEmailList emails={data}/>
+            content = <MaskedEmailList emails={data} domain={domain}/>
         }
 
         return (
@@ -98,7 +101,9 @@ class EMask extends React.Component {
                 <Container>
                     {this.state.isAddModalOpen &&
                     <AddMaskedEmailModal onClose={this.closeAddModal}
-                                         refresh={this.refreshData}/>
+                                         refresh={this.refreshData}
+                                         domain={domain}
+                    />
                     }
 
                     <Button onClick={this.openAddModal}>Add Masked Email</Button>

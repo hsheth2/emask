@@ -128,7 +128,10 @@ router.get('/ping', (req, res) => res.send('pong'));
 router.get('/masks', (req, res, next) => {
     Mask.find({userId: 1}, (err, data) => { // TODO use actual user ID
         if (err) return next(err);
-        res.json(data);
+        res.json({
+            masks: data,
+            domain: process.env.MAILGUN_DOMAIN,
+        });
     })
 });
 
@@ -142,7 +145,9 @@ router.post('/masks', (req, res, next) => {
     const mask = new Mask(data);
     mask.save((err, mask) => {
         if (err) return next(err);
-        res.sendStatus(202);
+
+        // TODO sync to mailgun
+        res.sendStatus(201);
     })
 });
 
