@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from "axios";
-import {toast} from "react-toastify";
 import SignupPage from "./SignupPage";
 
 class EnsureLogin extends React.Component {
@@ -31,13 +30,12 @@ class EnsureLogin extends React.Component {
                 })
             })
             .catch((err) => {
-                if (err.response.status >= 500) {
+                if (err.response.status >= 500)
                     console.error(err);
-                    toast.error("" + err)
-                }
+
                 this.setState({
                     checking: false,
-                    loggedIn: true,
+                    loggedIn: false,
                 })
             })
     };
@@ -71,7 +69,7 @@ class EnsureLogin extends React.Component {
                 )
             } else {
                 return (
-                    <SignupPage recheck={this.checkLogin} showLogin={this.showLogin}/>
+                    <SignupPage recheckAuth={this.checkLogin} showLogin={this.showLogin}/>
                 )
             }
         }

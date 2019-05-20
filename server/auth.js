@@ -6,7 +6,11 @@ const router = express.Router();
 
 const {User} = require('./db');
 
-router.get('/ping', (req, res) => res.send('pong'));
+router.get('/ping', (req, res) => {
+    res.json({
+        message: 'pong',
+    })
+});
 
 passport.use(new LocalStrategy(
     (username, password, done) => {
@@ -65,8 +69,17 @@ router.post('/signup', (req, res, next) => {
 
 });
 
-module.exports = (app) => {
-    app.use(passport.initialize());
-    app.use(passport.session());
-    return router;
+module.exports = {
+    setup: (app) => {
+        app.use(passport.initialize());
+        app.use(passport.session());
+    },
+    router: router,
+    authenticate: (req, res, next) => {
+        if (req.user)
+            return next();
+        return res.status(401).json({
+            message: "User not authenticated",
+        })
+    }
 };

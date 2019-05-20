@@ -2,7 +2,13 @@ const express = require('express');
 
 const router = express.Router();
 
-const {db, Mask} = require('./db');
+const {Mask} = require('./db');
+
+router.get('/ping', (req, res) => {
+    res.json({
+        message: 'pong',
+    })
+});
 
 const mailgun = require('mailgun-js')({
     apiKey: process.env.MAILGUN_API_KEY,
@@ -122,8 +128,6 @@ router.get('/sync', (req, res, next) => {
         res.send('refreshed');
     });
 });
-
-router.get('/ping', (req, res) => res.send('pong'));
 
 router.get('/masks', (req, res, next) => {
     Mask.find({userId: 1}, (err, data) => { // TODO use actual user ID

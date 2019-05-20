@@ -40,7 +40,7 @@ class SignupPage extends React.Component {
 
         axios.post('/auth/signup', this.state)
             .then((data) => {
-                this.props.recheck();
+                this.props.recheckAuth();
             })
             .catch((err) => {
                 if (err.response.status === 400) {
