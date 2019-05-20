@@ -9,6 +9,7 @@ class App extends React.Component {
         return (
             <div>
                 <EMask/>
+                TODO: check if user is logged in, and present a login screen if needed
                 <ToastContainer/>
             </div>
         );

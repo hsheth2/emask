@@ -18,4 +18,5 @@ db.once('open', () => {
 });
 
 module.exports.db = db;
-module.exports.Mask = require('./masks');
+module.exports.Mask = require('./mask');
+module.exports.User = require('./user');
