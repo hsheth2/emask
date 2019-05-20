@@ -46,15 +46,23 @@ router.post('/signup', (req, res, next) => {
     const data = req.body;
 
     const user = new User(data);
-    user.save((err, user) => {
+    user.validate((err) => {
         if (err)
-            return next(err);
+            return res.status(400).json({
+                message: err.message,
+            });
 
-        res.json({
-            message: "User was created",
-            user: user,
+        user.save((err, user) => {
+            if (err)
+                return next(err);
+
+            res.json({
+                message: "User was created",
+                user: user,
+            })
         })
-    })
+    });
+
 });
 
 module.exports = (app) => {

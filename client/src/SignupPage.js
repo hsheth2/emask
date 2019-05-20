@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from "axios";
 import {Container, Form, Header, Message} from "semantic-ui-react";
+import {toast} from "react-toastify";
 
 class SignupPage extends React.Component {
     constructor(props) {
@@ -42,7 +43,15 @@ class SignupPage extends React.Component {
                 // TODO signup success
             })
             .catch((err) => {
-                // TODO signup failed
+                if (err.response.status === 400) {
+                    toast.error(err.response.data.message);
+                } else {
+                    console.error(err);
+                    toast.error("Failed to sign up. " + err);
+                }
+                this.setState({
+                    loading: false,
+                })
             })
     };
 
