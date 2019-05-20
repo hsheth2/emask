@@ -38,9 +38,9 @@ class SignupPage extends React.Component {
             loading: true,
         });
 
-        axios.post('/api/auth/signup', this.state)
+        axios.post('/auth/signup', this.state)
             .then((data) => {
-                // TODO signup success
+                this.props.recheck();
             })
             .catch((err) => {
                 if (err.response.status === 400) {

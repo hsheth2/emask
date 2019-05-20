@@ -15,9 +15,10 @@ const session = require('express-session');
 app.use(session({secret: "TODO"}));
 
 const api = require('./api');
+// TODO only allow routing to API if logged in
 app.use('/api', api);
 
 const auth = require('./auth')(app);
-app.use('/api/auth', auth);
+app.use('/auth', auth);
 
 app.listen(port, () => console.log(`Server listening on port ${port}!`));

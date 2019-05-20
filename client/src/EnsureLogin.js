@@ -1,4 +1,6 @@
 import React from 'react';
+import axios from "axios";
+import {toast} from "react-toastify";
 import SignupPage from "./SignupPage";
 
 class EnsureLogin extends React.Component {
@@ -21,10 +23,23 @@ class EnsureLogin extends React.Component {
             checking: true,
         });
 
-        this.setState({
-            checking: false,
-        })
-        // TODO actually check if the user is logged in already
+        axios.get('/api/ping')
+            .then((response) => {
+                this.setState({
+                    checking: false,
+                    loggedIn: true,
+                })
+            })
+            .catch((err) => {
+                if (err.response.status >= 500) {
+                    console.error(err);
+                    toast.error("" + err)
+                }
+                this.setState({
+                    checking: false,
+                    loggedIn: true,
+                })
+            })
     };
 
     showLogin = (event) => {
@@ -43,7 +58,12 @@ class EnsureLogin extends React.Component {
     };
 
     render() {
-        // TODO: check if user is logged in, and present a login screen if needed
+        if (this.state.checking) {
+            return (
+                <p>Loading data.</p>
+            )
+        }
+
         if (!this.state.loggedIn) {
             if (this.state.showingLogin) {
                 return (
@@ -51,7 +71,7 @@ class EnsureLogin extends React.Component {
                 )
             } else {
                 return (
-                    <SignupPage showLogin={this.showLogin}/>
+                    <SignupPage recheck={this.checkLogin} showLogin={this.showLogin}/>
                 )
             }
         }
