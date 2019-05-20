@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
+        unique: true,
     },
     password: { // TODO we should not be storing passwords in plain text
         type: String,

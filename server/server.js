@@ -10,7 +10,14 @@ const port = 3001;
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());  // to support JSON-encoded bodies
 
+const session = require('express-session');
+// TODO set up express-session properly
+app.use(session({secret: "TODO"}));
+
 const api = require('./api');
 app.use('/api', api);
+
+const auth = require('./auth')(app);
+app.use('/api/auth', auth);
 
 app.listen(port, () => console.log(`Server listening on port ${port}!`));
