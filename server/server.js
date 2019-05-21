@@ -14,9 +14,15 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());  // to support JSON-encoded bodies
 
 const session = require('express-session');
-// TODO set up express-session properly
+const db = require('./db');
+const MongoStore = require('connect-mongo')(session);
 app.use(session({
     secret: config.sessionSecret,
+    store: new MongoStore({
+        mongooseConnection: db.connection,
+    }),
+    saveUninitialized: true,
+    resave: true,
 }));
 
 const auth = require('./auth');
