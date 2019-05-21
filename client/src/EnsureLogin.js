@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from "axios";
 import SignupPage from "./SignupPage";
+import LoginPage from "./LoginPage";
+import {Container, Loader} from "semantic-ui-react";
 
 class EnsureLogin extends React.Component {
     constructor(props) {
@@ -9,7 +11,7 @@ class EnsureLogin extends React.Component {
         this.state = {
             checking: false,
             loggedIn: false,
-            showingLogin: false,
+            showingLogin: true,
         }
     }
 
@@ -58,14 +60,16 @@ class EnsureLogin extends React.Component {
     render() {
         if (this.state.checking) {
             return (
-                <p>Loading data.</p>
+                <Container>
+                    <Loader active inline='centered' content={'Loading'} />
+                </Container>
             )
         }
 
         if (!this.state.loggedIn) {
             if (this.state.showingLogin) {
                 return (
-                    <p>A login page goes here.</p>
+                    <LoginPage recheckAuth={this.checkLogin} showSignup={this.showSignup}/>
                 )
             } else {
                 return (
