@@ -7,8 +7,9 @@ const checkAddr = (addr) => {
 };
 
 const maskSchema = new mongoose.Schema({
-    userId: {
-        type: Number,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
     },
     description: String,

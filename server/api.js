@@ -37,8 +37,7 @@ function mailgunRouteFromMask(user, mask) {
         description: `EMask; mask_id=${mask._id}; ${mask.description}`,
         expression: `match_recipient("${address}@${domain}")`,
         action: [
-            // TODO forward based on user id
-            'forward("hsheth2@gmail.com")',
+            `forward("${user.email}")`,
             'stop()',
         ],
     }
@@ -87,8 +86,8 @@ async function mailgunUpdateServer(user, masks, routes) {
     }
 }
 
-function mailgunSync(userId, done) {
-    Mask.find({userId: userId}, (err, masks) => {
+function mailgunSync(user, done) {
+    Mask.find({user: user}, (err, masks) => {
         if (err)
             return done(err);
 
@@ -109,7 +108,7 @@ function mailgunSync(userId, done) {
             console.log("data", masks);
             console.log("routes", routes);
 
-            mailgunUpdateServer(null, masks, routes)
+            mailgunUpdateServer(user, masks, routes)
                 .then(() => {
                     done(null);
                 })
@@ -121,7 +120,7 @@ function mailgunSync(userId, done) {
 }
 
 router.get('/sync', (req, res, next) => {
-    mailgunSync(1, (err) => {
+    mailgunSync(req.user, (err) => {
         if (err)
             return next(err);
 
@@ -130,7 +129,7 @@ router.get('/sync', (req, res, next) => {
 });
 
 router.get('/masks', (req, res, next) => {
-    Mask.find({userId: 1}, (err, data) => { // TODO use actual user ID
+    Mask.find({user: req.user}, (err, data) => {
         if (err) return next(err);
         res.json({
             masks: data,
@@ -141,21 +140,23 @@ router.get('/masks', (req, res, next) => {
 
 router.post('/masks', (req, res, next) => {
     const data = req.body;
-    data.userId = 1; // TODO user actual user ID
+    data.user = req.user;
+
     if (!data.address) {
         data.address = Math.random().toString(36).substring(2,11)
     }
-    data.address = data.address + '';
-
-    if (data.address.search('@') >= 0)
-        return res.status(400).send('Address cannot contain "@" character');
 
     const mask = new Mask(data);
     mask.save((err, mask) => {
-        if (err) return next(err);
+        // TODO run validate first
+        if (err)
+            return next(err);
 
-        // TODO sync to mailgun
-        res.sendStatus(201);
+        mailgunSync(req.user, (err) => {
+            if (err)
+                return next(err);
+            res.sendStatus(201);
+        });
     })
 });
 

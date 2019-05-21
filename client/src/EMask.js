@@ -31,7 +31,6 @@ class EMask extends React.Component {
         axios.get('/api/masks')
             .then((response) => {
                 const data = response.data;
-                console.log(data);
                 this.setState({
                     loaded: true,
                     loadedSuccess: true,
