@@ -3,6 +3,7 @@ import axios from "axios";
 import SignupPage from "./SignupPage";
 import LoginPage from "./LoginPage";
 import {Container, Loader} from "semantic-ui-react";
+import CenterMiddle from "./CenterMiddle";
 
 const withEnsuredLogin = (WrappedComponent) => {
     // noinspection JSPotentiallyInvalidUsageOfThis
@@ -80,9 +81,9 @@ const withEnsuredLogin = (WrappedComponent) => {
         render() {
             if (this.state.checking) {
                 return (
-                    <Container>
+                    <CenterMiddle minHeight='100vh'>
                         <Loader active inline='centered' content={'Loading'}/>
-                    </Container>
+                    </CenterMiddle>
                 )
             }
 
@@ -90,12 +91,16 @@ const withEnsuredLogin = (WrappedComponent) => {
                 if (this.state.showingLogin) {
                     // noinspection JSPotentiallyInvalidUsageOfThis
                     return (
-                        <LoginPage recheckAuth={this.checkAuth} showSignup={this.showSignup}/>
+                        <CenterMiddle minHeight='100vh'>
+                            <LoginPage recheckAuth={this.checkAuth} showSignup={this.showSignup}/>
+                        </CenterMiddle>
                     )
                 } else {
                     // noinspection JSPotentiallyInvalidUsageOfThis
                     return (
-                        <SignupPage recheckAuth={this.checkAuth} showLogin={this.showLogin}/>
+                        <CenterMiddle minHeight='100vh'>
+                            <SignupPage recheckAuth={this.checkAuth} showLogin={this.showLogin}/>
+                        </CenterMiddle>
                     )
                 }
             }
