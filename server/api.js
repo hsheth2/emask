@@ -29,7 +29,7 @@ function mailgunMaskIdFromDesc(description) {
     return match[1];
 }
 
-function mailgunRouteFromMask(user, mask) {
+function mailgunRouteFromMask(mask) {
     let address = escapeRegExp(mask.address);
     let domain = escapeRegExp(process.env.MAILGUN_DOMAIN);
     return {
@@ -37,18 +37,18 @@ function mailgunRouteFromMask(user, mask) {
         description: `EMask; mask_id=${mask._id}; ${mask.description}`,
         expression: `match_recipient("${address}@${domain}")`,
         action: [
-            `forward("${user.email}")`,
+            `forward("${mask.user.email}")`,
             'stop()',
         ],
     }
 }
 
-async function mailgunUpdateServer(user, masks, routes) {
+async function mailgunUpdateServer(masks, routes) {
     // First pass: add/update routes for all masks
     for (let mask of masks) {
         let maskId = mask._id;
 
-        let goalRoute = mailgunRouteFromMask(user, mask);
+        let goalRoute = mailgunRouteFromMask(mask);
         // noinspection EqualityComparisonWithCoercionJS
         let prevRoute = routes.find(route => route.maskId == maskId);
         if (prevRoute) {
@@ -86,8 +86,8 @@ async function mailgunUpdateServer(user, masks, routes) {
     }
 }
 
-function mailgunSync(user, done) {
-    Mask.find({user: user}, (err, masks) => {
+function mailgunSync(done) {
+    Mask.find({blocked: false}).populate('user').exec((err, masks) => {
         if (err)
             return done(err);
 
@@ -108,7 +108,7 @@ function mailgunSync(user, done) {
             console.log("data", masks);
             console.log("routes", routes);
 
-            mailgunUpdateServer(user, masks, routes)
+            mailgunUpdateServer(masks, routes)
                 .then(() => {
                     done(null);
                 })
@@ -120,7 +120,7 @@ function mailgunSync(user, done) {
 }
 
 router.get('/sync', (req, res, next) => {
-    mailgunSync(req.user, (err) => {
+    mailgunSync((err) => {
         if (err)
             return next(err);
 
@@ -152,7 +152,7 @@ router.post('/masks', (req, res, next) => {
         if (err)
             return next(err);
 
-        mailgunSync(req.user, (err) => {
+        mailgunSync((err) => {
             if (err)
                 return next(err);
             res.sendStatus(201);
