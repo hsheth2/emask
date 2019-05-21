@@ -1,13 +1,12 @@
-require('dotenv').config();
-
 const mongoose = require('mongoose');
+const config = require('../config');
 
 // https://stackoverflow.com/a/51962721
 mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 
-mongoose.connect(process.env.MONGODB_URI);
+mongoose.connect(config.mongodb.host);
 const db = mongoose.connection;
 db.on('error', (err) => {
     console.error('database connection error:', err);

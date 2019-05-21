@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 
 const checkAddr = (addr) => {
-    const email = addr + '@' + process.env.MAILGUN_DOMAIN;
+    // We only need to check that addr forms a valid initial portion of an email. For simplicity,
+    // we just tack on a known valid domain, example.com.
+    const email = addr + '@example.com';
     return validator.isEmail(email);
 };
 

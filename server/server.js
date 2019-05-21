@@ -1,6 +1,6 @@
 // backend server
 
-require('dotenv').config();
+const config = require('./config');
 
 const express = require('express');
 const app = express();
@@ -15,7 +15,9 @@ app.use(bodyParser.json());  // to support JSON-encoded bodies
 
 const session = require('express-session');
 // TODO set up express-session properly
-app.use(session({secret: "TODO"}));
+app.use(session({
+    secret: config.sessionSecret,
+}));
 
 const auth = require('./auth');
 auth.setup(app);

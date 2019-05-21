@@ -1,4 +1,5 @@
 const express = require('express');
+const config = require('./config');
 
 const router = express.Router();
 
@@ -11,8 +12,8 @@ router.get('/ping', (req, res) => {
 });
 
 const mailgun = require('mailgun-js')({
-    apiKey: process.env.MAILGUN_API_KEY,
-    domain: process.env.MAILGUN_DOMAIN,
+    apiKey: config.mailgun.apiKey,
+    domain: config.domain,
 });
 
 function escapeRegExp(string) {
@@ -31,9 +32,9 @@ function mailgunMaskIdFromDesc(description) {
 
 function mailgunRouteFromMask(mask) {
     let address = escapeRegExp(mask.address);
-    let domain = escapeRegExp(process.env.MAILGUN_DOMAIN);
+    let domain = escapeRegExp(config.domain);
     return {
-        priority: parseInt(process.env.MAILGUN_ROUTE_PRIORITY),
+        priority: config.mailgun.routePriority,
         description: `EMask; mask_id=${mask._id}; ${mask.description}`,
         expression: `match_recipient("${address}@${domain}")`,
         action: [
@@ -133,7 +134,7 @@ router.get('/masks', (req, res, next) => {
         if (err) return next(err);
         res.json({
             masks: data,
-            domain: process.env.MAILGUN_DOMAIN,
+            domain: config.domain,
         });
     })
 });
