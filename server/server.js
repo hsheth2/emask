@@ -6,6 +6,9 @@ const express = require('express');
 const app = express();
 const port = 3001;
 
+const morgan = require('morgan');
+app.use(morgan('tiny'));
+
 // https://stackoverflow.com/a/12008719
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());  // to support JSON-encoded bodies

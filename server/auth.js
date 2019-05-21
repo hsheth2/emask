@@ -60,9 +60,14 @@ router.post('/signup', (req, res, next) => {
             if (err)
                 return next(err);
 
-            res.json({
-                message: "User was created",
-                user: user,
+            req.login(user, (err) => {
+                if (err)
+                    return next(err);
+
+                res.json({
+                    message: "User was created",
+                    user: user,
+                })
             })
         })
     });
@@ -74,7 +79,7 @@ module.exports = {
         app.use(passport.initialize());
         app.use(passport.session());
     },
-    router: router,
+    router,
     authenticate: (req, res, next) => {
         if (req.user)
             return next();
