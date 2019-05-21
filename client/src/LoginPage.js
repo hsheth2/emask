@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from "axios";
-import {Container, Form, Header, Message} from "semantic-ui-react";
+import {Button, Container, Form, Header} from "semantic-ui-react";
 import {toast} from "react-toastify";
 
 class LoginPage extends React.Component {
@@ -61,12 +61,9 @@ class LoginPage extends React.Component {
                     <Form.Input label={"Username"} value={this.state.username} onChange={this.handleUsernameChange} />
                     <Form.Input label={"Password"} value={this.state.password} onChange={this.handlePasswordChange} type={"password"} />
 
-                    <Form.Button primary onClick={this.login}>Login</Form.Button>
+                    <Button floated={'right'} type={'submit'} primary onClick={this.login}>Login</Button>
+                    <Button floated={'left'} basic secondary onClick={this.props.showSignup}>Signup</Button>
                 </Form>
-
-                <Message>
-                    Don't have an account? <a href="#" onClick={this.props.showSignup}>Sign Up</a>
-                </Message>
             </Container>
         )
     }
