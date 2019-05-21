@@ -145,8 +145,9 @@ router.post('/masks', (req, res, next) => {
     if (!data.address) {
         data.address = Math.random().toString(36).substring(2,11)
     }
+    data.address = data.address + '';
 
-    if (data.search('@') >= 0)
+    if (data.address.search('@') >= 0)
         return res.status(400).send('Address cannot contain "@" character');
 
     const mask = new Mask(data);

@@ -1,4 +1,10 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
+
+const checkAddr = (addr) => {
+    const email = addr + '@' + process.env.MAILGUN_DOMAIN;
+    return validator.isEmail(email);
+};
 
 const maskSchema = new mongoose.Schema({
     userId: {
@@ -10,6 +16,8 @@ const maskSchema = new mongoose.Schema({
         type: String,
         unique: true,
         required: true,
+        lowercase: true,
+        validate: [checkAddr, 'Invalid email address']
     },
     blocked: {
         type: Boolean,
