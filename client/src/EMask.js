@@ -107,6 +107,8 @@ class EMask extends React.Component {
 
                     <Button onClick={this.openAddModal}>Add Masked Email</Button>
 
+                    <Button onClick={this.props.logout}>Logout</Button>
+
                     {content}
                 </Container>
             </div>

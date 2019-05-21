@@ -43,7 +43,7 @@ router.post('/login',
     (req, res) => {
         // If this function gets called, authentication was successful.
         // `req.user` contains the authenticated user.
-        res.json({message: "Logged in successfully"});
+        res.json({message: "User logged in successfully"});
     });
 
 router.post('/signup', (req, res, next) => {
@@ -71,7 +71,27 @@ router.post('/signup', (req, res, next) => {
             })
         })
     });
+});
 
+const authenticate = (req, res, next) => {
+    if (req.user)
+        return next();
+    return res.status(401).json({
+        message: "User not authenticated",
+    })
+};
+
+router.get('/check', authenticate, (req, res) => {
+    return res.json({
+        message: "User is authenticated",
+    })
+});
+
+router.post('/logout', authenticate, (req, res) => {
+    req.logout();
+    return res.json({
+        message: "User logged out",
+    })
 });
 
 module.exports = {
@@ -80,11 +100,5 @@ module.exports = {
         app.use(passport.session());
     },
     router,
-    authenticate: (req, res, next) => {
-        if (req.user)
-            return next();
-        return res.status(401).json({
-            message: "User not authenticated",
-        })
-    }
+    authenticate,
 };

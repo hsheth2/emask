@@ -3,15 +3,15 @@ import EMask from "./EMask";
 
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import EnsureLogin from "./EnsureLogin";
+import withEnsuredLogin from "./withEnsuredLogin";
+
+const EnsureLoginEMask = withEnsuredLogin(EMask);
 
 class App extends React.Component {
     render() {
         return (
             <div>
-                <EnsureLogin>
-                    <EMask/>
-                </EnsureLogin>
+                <EnsureLoginEMask/>
 
                 <ToastContainer/>
             </div>
