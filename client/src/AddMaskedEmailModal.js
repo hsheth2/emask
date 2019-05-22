@@ -39,13 +39,14 @@ class App extends React.Component {
         axios.post('/api/masks', this.state)
             .then((response) => {
                 console.log(response);
-                this.props.refresh();
                 toast.success("Added masked email!");
-                this.props.onClose();
             })
             .catch((err) => {
                 console.error(err);
                 toast.error("Failed to add masked email.");
+            })
+            .finally(() => {
+                this.props.refresh({noReload: true});
                 this.props.onClose();
             })
     };

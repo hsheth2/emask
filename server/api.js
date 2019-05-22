@@ -106,8 +106,8 @@ function mailgunSync(done) {
                 return false;
             });
 
-            console.log("data", masks);
-            console.log("routes", routes);
+            // console.log("data", masks);
+            // console.log("routes", routes);
 
             mailgunUpdateServer(masks, routes)
                 .then(() => {
@@ -148,15 +148,42 @@ router.post('/masks', (req, res, next) => {
     }
 
     const mask = new Mask(data);
-    mask.save((err, mask) => {
-        // TODO run validate first
+    mask.validate((err) => {
+        if (err)
+            return res.status(400).json({
+                message: err.message,
+            });
+
+        mask.save((err, mask) => {
+            if (err)
+                return next(err);
+
+            mailgunSync((err) => {
+                if (err)
+                    return next(err);
+
+                res.status(201).json({
+                    message: "Mask created",
+                })
+            });
+        })
+    })
+});
+
+router.patch('/masks/:id', (req, res, next) => {
+    const maskId = req.params.id;
+    const update = req.body;
+
+    Mask.findOneAndUpdate({_id: maskId, user: req.user}, update, (err) => {
         if (err)
             return next(err);
 
         mailgunSync((err) => {
             if (err)
                 return next(err);
-            res.sendStatus(201);
+            res.status(202).json({
+                message: "Mask updated",
+            })
         });
     })
 });
