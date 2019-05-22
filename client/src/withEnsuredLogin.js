@@ -91,14 +91,14 @@ const withEnsuredLogin = (WrappedComponent) => {
                 if (this.state.showingLogin) {
                     // noinspection JSPotentiallyInvalidUsageOfThis
                     return (
-                        <CenterMiddle minHeight='100vh'>
+                        <CenterMiddle minHeight='100vh' maxWidth='450px'>
                             <LoginPage recheckAuth={this.checkAuth} showSignup={this.showSignup}/>
                         </CenterMiddle>
                     )
                 } else {
                     // noinspection JSPotentiallyInvalidUsageOfThis
                     return (
-                        <CenterMiddle minHeight='100vh'>
+                        <CenterMiddle minHeight='100vh' maxWidth='450px'>
                             <SignupPage recheckAuth={this.checkAuth} showLogin={this.showLogin}/>
                         </CenterMiddle>
                     )
