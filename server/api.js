@@ -83,4 +83,6 @@ router.patch('/masks/:id', (req, res, next) => {
     })
 });
 
+// TODO delete method
+
 module.exports = router;

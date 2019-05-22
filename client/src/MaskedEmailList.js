@@ -19,8 +19,8 @@ class App extends React.Component {
     };
 
     render() {
-        let masks = this.props.masks;
-        let domain = this.props.domain;
+        const masks = this.props.masks;
+        const domain = this.props.domain;
 
         return (
             <Table striped>
