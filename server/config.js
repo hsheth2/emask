@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 module.exports = {
+    port: 3001,
     sessionSecret: 'SOMETHING BIG GOES HERE',
     mongodb: {
         host: process.env.MONGODB_URI,

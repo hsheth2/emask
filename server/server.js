@@ -4,7 +4,6 @@ const config = require('./config');
 
 const express = require('express');
 const app = express();
-const port = 3001;
 
 const morgan = require('morgan');
 app.use(morgan('tiny'));
@@ -32,4 +31,5 @@ app.use('/auth', auth.router);
 const api = require('./api');
 app.use('/api', auth.authenticate, api);
 
+const port = config.port;
 app.listen(port, () => console.log(`Server listening on port ${port}!`));
