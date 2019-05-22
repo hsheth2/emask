@@ -13,7 +13,7 @@ class EMask extends React.Component {
             isAddModalOpen: false,
             loaded: false,
             loadedSuccess: false,
-            data: [],
+            masks: [],
             domain: "",
         };
     }
@@ -22,11 +22,12 @@ class EMask extends React.Component {
         this.refreshData();
     }
 
-    refreshData = () => {
-        this.setState({
-            loaded: false,
-            loadedSuccess: false,
-        });
+    refreshData = (options = {}) => {
+        if (!options.noReload)
+            this.setState({
+                loaded: false,
+                loadedSuccess: false,
+            });
 
         axios.get('/api/masks')
             .then((response) => {
@@ -34,7 +35,7 @@ class EMask extends React.Component {
                 this.setState({
                     loaded: true,
                     loadedSuccess: true,
-                    data: data.masks,
+                    masks: data.masks,
                     domain: data.domain,
                 });
             })
@@ -63,7 +64,7 @@ class EMask extends React.Component {
     render() {
         const loading = !this.state.loaded;
         const loadingFailed = !this.state.loadedSuccess;
-        const data = this.state.data;
+        const masks = this.state.masks;
         const domain = this.state.domain;
 
         let content;
@@ -85,7 +86,7 @@ class EMask extends React.Component {
                 </Segment>
             )
         } else {
-            content = <MaskedEmailList emails={data} domain={domain}/>
+            content = <MaskedEmailList masks={masks} domain={domain} refresh={this.refreshData}/>
         }
 
         return (
@@ -107,7 +108,7 @@ class EMask extends React.Component {
 
                     <Button onClick={this.openAddModal}>Add Masked Email</Button>
 
-                    <Button basic secondary onClick={this.props.logout}>Logout</Button>
+                    <Button basic onClick={this.props.logout}>Logout</Button>
 
                     {content}
                 </Container>
