@@ -10,5 +10,5 @@ module.exports = {
         routePriority: parseInt(process.env.MAILGUN_ROUTE_PRIORITY),
         apiKey: process.env.MAILGUN_API_KEY,
     },
-    domain: process.env.MAILGUN_DOMAIN,
+    domain: process.env.MAILGUN_DOMAIN, // TODO need to actually set up masks.sheth.io
 };
