@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon server.js",
+    "start-prod": "node server.js",
     "mongodb-docker": "docker run --name emask-mongo -p 27017:27017 --rm -d mongo"
   },
   "dependencies": {
