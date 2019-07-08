@@ -34,18 +34,39 @@ function mailgunRouteFromMask(mask) {
     }
 }
 
-async function mailgunUpdateServer(masks, routes) {
-    // First pass: add/update routes for all masks
+function mailgunGenerateTargetRoutes(masks) {
+    const domain = escapeRegExp(config.domain);
+    const targetRoutes = {
+        'catchall': {
+            priority: config.mailgun.routePriority + 1,
+            description: `EMask; mask_id=catchall; a catchall route for ${config.domain}`,
+            expression: `match_recipient(".*@${domain}")`,
+            action: [
+                // TODO: Forward to an admin email or something more intelligent.
+                'stop()',
+            ],
+        }
+    };
     for (const mask of masks) {
         const maskId = mask._id;
+        targetRoutes[maskId] = mailgunRouteFromMask(mask);
+    }
+    return targetRoutes;
+}
 
-        const goalRoute = mailgunRouteFromMask(mask);
+async function mailgunUpdateServer(masks, routes) {
+    const targetRoutes = mailgunGenerateTargetRoutes(masks);
+
+    // First pass: add/update routes for all masks
+    for (const maskId in targetRoutes) {
+        const goalRoute = targetRoutes[maskId];
+
         // noinspection EqualityComparisonWithCoercionJS
         const prevRoute = routes.find(route => route.maskId == maskId);
         if (prevRoute) {
             // Only send request to server if necessary
             const updatedRoute = {};
-            for (const key in goalRoute) {
+            Object.keys(goalRoute).forEach((key) => {
                 // The mailgun API requires this parameter be sent as "action", but in its replies
                 // it uses the "actions" key.
                 let prevKey = key;
@@ -55,7 +76,7 @@ async function mailgunUpdateServer(masks, routes) {
                 if (JSON.stringify(prevRoute[prevKey]) !== JSON.stringify(goalRoute[key])) {
                     updatedRoute[key] = goalRoute[key];
                 }
-            }
+            });
 
             if (Object.keys(updatedRoute).length !== 0) {
                 console.log(`updating mailgun route id=${prevRoute.id}`, updatedRoute);
