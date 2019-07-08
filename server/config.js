@@ -3,7 +3,7 @@ if (dotenv.error)
     throw dotenv.error;
 
 module.exports = {
-    port: 3001,
+    port: process.env.PORT || 3001,
     sessionSecret: 'SOMETHING BIG GOES HERE',
     mongodb: {
         host: process.env.MONGODB_URI,
