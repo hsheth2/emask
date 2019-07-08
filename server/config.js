@@ -3,13 +3,13 @@ if (dotenv.error)
     throw dotenv.error;
 
 module.exports = {
-    port: process.env.PORT || 3001,
+    port: parseInt(process.env.PORT, 10) || 3001,
     sessionSecret: 'SOMETHING BIG GOES HERE',
     mongodb: {
         host: process.env.MONGODB_URI,
     },
     mailgun: {
-        routePriority: parseInt(process.env.MAILGUN_ROUTE_PRIORITY),
+        routePriority: parseInt(process.env.MAILGUN_ROUTE_PRIORITY, 10),
         apiKey: process.env.MAILGUN_API_KEY,
     },
     domain: process.env.MAILGUN_DOMAIN,
