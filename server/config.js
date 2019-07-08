@@ -1,4 +1,6 @@
-require('dotenv').config();
+const dotenv = require('dotenv').config();
+if (dotenv.error)
+    throw dotenv.error;
 
 module.exports = {
     port: 3001,
@@ -10,5 +12,5 @@ module.exports = {
         routePriority: parseInt(process.env.MAILGUN_ROUTE_PRIORITY),
         apiKey: process.env.MAILGUN_API_KEY,
     },
-    domain: process.env.MAILGUN_DOMAIN, // TODO need to actually set up masks.sheth.io
+    domain: process.env.MAILGUN_DOMAIN,
 };
