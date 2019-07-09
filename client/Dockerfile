@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y curl
 
 COPY --from=builder /app/build /usr/share/nginx/html/
 
-HEALTHCHECK --interval=10s --timeout=3s \
+HEALTHCHECK \
   CMD curl -f http://localhost/ || exit 1
 
 # CMD inherited from nginx

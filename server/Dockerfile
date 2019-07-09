@@ -8,7 +8,7 @@ RUN yarn install --frozen-lockfile --no-cache --production
 
 COPY . .
 
-HEALTHCHECK --interval=10s --timeout=3s \
+HEALTHCHECK \
   CMD curl -f http://localhost/auth/ping || exit 1
 
 CMD ["yarn", "start-prod"]
