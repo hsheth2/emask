@@ -2,7 +2,7 @@ import React from 'react';
 import axios from "axios";
 import SignupPage from "./SignupPage";
 import LoginPage from "./LoginPage";
-import {Container, Loader} from "semantic-ui-react";
+import {Loader} from "semantic-ui-react";
 import CenterMiddle from "./CenterMiddle";
 
 const withEnsuredLogin = (WrappedComponent) => {

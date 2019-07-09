@@ -31,5 +31,8 @@ app.use('/auth', auth.router);
 const api = require('./api');
 app.use('/api', auth.authenticate, api);
 
+const callback = require('./callback');
+app.use('/auth', callback.router);
+
 const port = config.port;
 app.listen(port, () => console.log(`Server listening on port ${port}!`));

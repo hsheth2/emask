@@ -1,10 +1,13 @@
 const config = require('./config');
+const express = require('express');
 const {Mask} = require('./db');
 
 const mailgun = require('mailgun-js')({
     apiKey: config.mailgun.apiKey,
     domain: config.domain,
 });
+
+const router = express.Router();
 
 function escapeRegExp(string) {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
@@ -131,6 +134,25 @@ function mailgunSync(done) {
     });
 }
 
+router.post('/*', (req, res, next) => {
+    const body = req.body;
+
+    if (!mailgun.validateWebhook(body.timestamp, body.token, body.signature)) {
+        res.sendStatus(400).json({
+            'error': 'Webhook message validation failed',
+        })
+    } else next();
+});
+
+router.post('/message_received', (req, res) => {
+    console.log(req.body);
+    console.log(req);
+    res.json({
+        message: 'yay',
+    })
+});
+
 module.exports = {
     sync: mailgunSync,
+    callbackRouter: router,
 };
