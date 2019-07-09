@@ -134,11 +134,8 @@ function mailgunSync(done) {
     });
 }
 
-router.post('/*', (req, res, next) => {
-    console.log(req.body);
-    console.log(req);
+router.post('/*', config.upload.any(), (req, res, next) => {
     const body = req.body;
-
     if (!mailgun.validateWebhook(body.timestamp, body.token, body.signature)) {
         res.status(400).json({
             'error': 'Callback message validation failed',
@@ -148,6 +145,8 @@ router.post('/*', (req, res, next) => {
 
 router.post('/message_received', (req, res) => {
     console.log('callback message recv handler');
+    console.log(req.body);
+    // TODO: Need to forward the message rather than discarding it.
     res.json({
         message: 'yay',
     })
