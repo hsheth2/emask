@@ -32,7 +32,7 @@ const api = require('./api');
 app.use('/api', auth.authenticate, api);
 
 const callback = require('./callback');
-app.use('/auth', callback.router);
+app.use('/callback', callback.router);
 
 const port = config.port;
 app.listen(port, () => console.log(`Server listening on port ${port}!`));

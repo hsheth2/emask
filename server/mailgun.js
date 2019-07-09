@@ -135,18 +135,19 @@ function mailgunSync(done) {
 }
 
 router.post('/*', (req, res, next) => {
+    console.log(req.body);
+    console.log(req);
     const body = req.body;
 
     if (!mailgun.validateWebhook(body.timestamp, body.token, body.signature)) {
-        res.sendStatus(400).json({
-            'error': 'Webhook message validation failed',
+        res.status(400).json({
+            'error': 'Callback message validation failed',
         })
     } else next();
 });
 
 router.post('/message_received', (req, res) => {
-    console.log(req.body);
-    console.log(req);
+    console.log('callback message recv handler');
     res.json({
         message: 'yay',
     })
