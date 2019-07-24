@@ -4,6 +4,7 @@ services:
   mongo:
     image: mongo
     restart: always
+    # TODO: Need to add a volume to persist this data.
   server:
     build: ./server
     restart: always
