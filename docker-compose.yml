@@ -4,7 +4,8 @@ services:
   mongo:
     image: mongo
     restart: always
-    # TODO: Need to add a volume to persist this data.
+    volumes:
+      - mongodata:/data/db
   server:
     build: ./server
     restart: always
@@ -44,6 +45,9 @@ services:
       traefik.frontend.headers.STSPreload: true
       traefik.frontend.headers.STSSeconds: 2628000
       traefik.frontend.headers.STSIncludeSubdomains: true
+
+volumes:
+  mongodata:
 
 networks:
   traefik:
