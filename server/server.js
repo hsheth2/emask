@@ -11,6 +11,7 @@ app.use(morgan('tiny'));
 // https://stackoverflow.com/a/12008719
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());  // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies (application/x-www-form-urlencoded)
 
 const session = require('express-session');
 const db = require('./db');

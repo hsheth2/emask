@@ -4,7 +4,7 @@ const {Mask} = require('./db');
 
 const mailgun = require('mailgun-js')({
     apiKey: config.mailgun.apiKey,
-    domain: config.domain,
+    domain: config.sendDomain,
 });
 
 const router = express.Router();
@@ -31,7 +31,9 @@ function mailgunRouteFromMask(mask) {
         description: `EMask; mask_id=${mask._id}; ${mask.description}`,
         expression: `match_recipient("${address}@${domain}")`,
         action: [
-            `forward("${mask.user.email}")`,
+            //`forward("${mask.user.email}")`,
+            //`forward("https://${config.callbackDomain}/callback/mailgun/message_received/${mask.user._id}")`,
+            `store(notify="https://${config.callbackDomain}/callback/mailgun/message_received/${mask.user._id}")`,
             'stop()',
         ],
     }
@@ -136,6 +138,7 @@ function mailgunSync(done) {
 
 router.post('/*', config.upload.any(), (req, res, next) => {
     const body = req.body;
+    //console.log("mailgun validation", req);
     if (!mailgun.validateWebhook(body.timestamp, body.token, body.signature)) {
         res.status(400).json({
             'error': 'Callback message validation failed',
@@ -143,13 +146,28 @@ router.post('/*', config.upload.any(), (req, res, next) => {
     } else next();
 });
 
-router.post('/message_received', (req, res) => {
+router.post('/message_received/:maskId', (req, res) => {
+    const mask_id = req.params.maskId;
     console.log('callback message recv handler');
     console.log(req.body);
-    // TODO: Need to forward the message rather than discarding it.
-    res.json({
-        message: 'yay',
-    })
+
+    const message = {
+        from: req.body.from,
+        to: "hsheth2@gmail.com", // TODO look up actual person on end of mask
+        subject: req.body.subject,
+        text: req.body['body-plain'],
+        html: req.body['body-html'],
+        // TODO: attachments
+        // TODO: MIME headers
+        // TODO: pass through Message-ID
+    };
+
+    mailgun.messages().send(message, (err, body) => {
+        if (err) throw err;
+        res.json({
+            message: 'yay',
+        })
+    });
 });
 
 module.exports = {

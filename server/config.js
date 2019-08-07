@@ -19,5 +19,7 @@ module.exports = {
         apiKey: process.env.MAILGUN_API_KEY,
     },
     domain: process.env.MAILGUN_DOMAIN,
+    sendDomain: process.env.MAILGUN_SEND_DOMAIN || process.env.MAILGUN_DOMAIN,
+    callbackDomain: process.env.MAILGUN_CALLBACK_DOMAIN || process.env.MAILGUN_DOMAIN,
     upload: upload,
 };
