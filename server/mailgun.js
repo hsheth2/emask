@@ -1,6 +1,7 @@
 const config = require('./config');
 const express = require('express');
 const {Mask} = require('./db');
+const MailComposer = require('nodemailer/lib/mail-composer');
 
 const mailgun = require('mailgun-js')({
     apiKey: config.mailgun.apiKey,
@@ -151,22 +152,35 @@ router.post('/message_received/:maskId', (req, res) => {
     console.log('callback message recv handler');
     console.log(req.body);
 
-    const message = {
-        from: req.body.from,
-        to: "hsheth2@gmail.com", // TODO look up actual person on end of mask
+    const messageOptions = {
+        from: req.body['From'],
+        to: req.body['To'],
+        // TODO: cc and bcc fields
         subject: req.body.subject,
         text: req.body['body-plain'],
         html: req.body['body-html'],
         // TODO: attachments
         // TODO: MIME headers
         // TODO: pass through Message-ID
+
+        disableFileAccess: true,
+        disableUrlAccess: true,
     };
 
-    mailgun.messages().send(message, (err, body) => {
+    new MailComposer(messageOptions).compile().build((err, message) => {
         if (err) throw err;
-        res.json({
-            message: 'yay',
+
+        mailgun.messages().sendMime({
+            to: "hsheth2@gmail.com", // TODO look up actual person on end of mask
+            message: message.toString('ascii'),
+        }, (err, body) => {
+            if (err) throw err;
+
+            res.json({
+                message: 'yay',
+            })
         })
+
     });
 });
 
