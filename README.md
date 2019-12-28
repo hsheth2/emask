@@ -1,6 +1,8 @@
 # EMask
 Set up email forwarders to avoid giving out your real email address.
 
+*Status: not finishing. [AnonAddy](https://github.com/anonaddy/anonaddy) does everything this intended to do.*
+
 ## Features (target)
 - [x] Creation of masked emails on a custom or private domain.
 - [x] Pick between auto-generated and custom email masks.
@@ -13,13 +15,13 @@ Set up email forwarders to avoid giving out your real email address.
       (will need to avoid becoming a spam amplification relay).
 - [ ] Chrome/Firefox web extension to automatically create a masked email
   [ ] address and fill a form field.
-  
+
 ## Approach
 - **Domain**: To maintain each individual's ability to stay off of block lists,
-  each person should use their own domain, or at least subdomain. 
+  each person should use their own domain, or at least subdomain.
 - **Forwarding**: Email forwarding will be done using Mailgun, on the
   assumption that nobody will need to forward over 10,000 emails per month,
-  which is the limit on the free tier. 
+  which is the limit on the free tier.
 - **Configuration Webapp**: Finally, there will be a webapp, which can be
   self-hosted or started via a Docker container, in which each user must create
   an account and enter their Mailgun API credentials. The webapp will handle
