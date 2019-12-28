@@ -35,6 +35,7 @@ function mailgunRouteFromMask(mask) {
             //`forward("${mask.user.email}")`,
             //`forward("https://${config.callbackDomain}/callback/mailgun/message_received/${mask.user._id}")`,
             `store(notify="https://${config.callbackDomain}/callback/mailgun/message_received/${mask.user._id}")`,
+            'store()',
             'stop()',
         ],
     }
@@ -49,6 +50,7 @@ function mailgunGenerateTargetRoutes(masks) {
             expression: `match_recipient(".*@${domain}")`,
             action: [
                 // TODO: Forward to an admin email or something more intelligent.
+                'store()',
                 'stop()',
             ],
         }
@@ -162,6 +164,8 @@ router.post('/message_received/:maskId', (req, res) => {
         // TODO: attachments
         // TODO: MIME headers
         // TODO: pass through Message-ID
+        // TODO: pass through In-Reply-To
+        // TODO: set replyTo email address
 
         disableFileAccess: true,
         disableUrlAccess: true,
